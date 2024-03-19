@@ -11,6 +11,7 @@ const HomeScreen = () => {
   const handleLogin = async () => {
     try {
       const response = await axios.post('http://192.168.53.237/se_g8/login.php', {
+        //192.168.53.237 เป็น IP address ของตาลนะ ต้องเปลี่ยนทีหลังถ้าทำเครื่องอื่น 
         username: username,
         password: password
       });
