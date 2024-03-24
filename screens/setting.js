@@ -4,10 +4,10 @@ import axios from 'axios';
 import { useAuth } from '../authContext';
 
 const SettingScreen = () => {
-  const { user} = useAuth();
+  // const { user} = useAuth();
   return (
     <View style={styles.container}>
-          <Text style={{fontSize: 20, fontWeight: 'bold'}}>Welcome, {user.username}</Text>
+          <Text style={{fontSize: 20, fontWeight: 'bold'}}>Welcome, </Text>
     </View>
   );
 };

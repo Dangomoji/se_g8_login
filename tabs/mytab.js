@@ -1,50 +1,15 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import HomeScreen from '../screens/home';
 import SettingScreen from '../screens/setting';
-import {Ionicons} from '@expo/vector-icons'
 
-const Tab = createBottomTabNavigator();
+const Drawer = createDrawerNavigator();
 
 export default function MyTabs() {
     return (
-        <Tab.Navigator
-            screenOptions={({route}) => ({
-                HeaderStyle: {
-                    backgroundColor: '#f4511e'
-                },
-                headerTintColor: '#fff',
-                headerTitleStyle:{
-                    fontWeight: 'bold'
-                },
-                tabBarActiveTintColor: 'black',
-                tabBarInactiveTintColor: 'gray',
-                tabBarIcon:({color}) => {
-                    let iconName
-                    if (route.name == 'Home') {
-                        iconName ='home'
-                    }
-                    else if(route.name == 'Settings') {
-                        iconName = 'settings-sharp'
-                    }
-                    return <Ionicons name = {iconName} size={25} />
-                },
-            })}
-        >
-            <Tab.Screen
-                name="Home"
-                component={HomeScreen}
-                options={{
-                    title: 'หน้าหลัก'
-                }}
-            />
-            <Tab.Screen
-                name="Settings"
-                component={SettingScreen}
-                options={{
-                    title: 'หน้าหลัก'
-                }}
-            />
-
-        </Tab.Navigator>
-    );
+          <Drawer.Navigator initialRouteName="Home">
+            <Drawer.Screen name="Home" component={HomeScreen} />
+            <Drawer.Screen name="Setting" component={SettingScreen} />
+          </Drawer.Navigator>
+      );
 }

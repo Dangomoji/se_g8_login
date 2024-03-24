@@ -17,7 +17,6 @@ const HomeScreen = () => {
       });
       if (response.data.success) {
         login(username, password); 
-        Alert.alert('Login Successful');
       } else {
         Alert.alert('Invalid username or password');
       }
