@@ -4,11 +4,7 @@ import { useAuth } from "../authContext";
 import UserHeader from "./userHeader";
 
 const HomeScreen = () => {
-  const { user, logout } = useAuth();
-
-  const handleLogout = () => {
-    logout();
-  };
+  const { user } = useAuth();
 
   return (
     <View style={styles.container}>
@@ -17,9 +13,6 @@ const HomeScreen = () => {
         <Text style={styles.welcomeText}>
           Welcome, {user.firstname} {user.lastname} {user.positionName}
         </Text>
-        <TouchableOpacity style={styles.button} onPress={handleLogout}>
-          <Text style={styles.buttonText}>Logout</Text>
-        </TouchableOpacity>
       </View>
     </View>
   );

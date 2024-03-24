@@ -23,6 +23,7 @@ const LoginScreen = () => {
       });
       if (response.data.success) {
         const { nurse } = response.data;
+        console.log(response.data)
         login(nurse);
       } else {
         Alert.alert("Invalid username or password");
