@@ -1,36 +1,11 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from '../screens/home';
+import SettingScreen from '../screens/setting';
 import {Ionicons} from '@expo/vector-icons'
 
 const Tab = createBottomTabNavigator();
 
 export default function MyTabs() {
-
-    const handleLogout = async () => {
-        Alert.alert(
-            'Logout',
-            'Are you sure you want to log out?',
-            [
-                {
-                    text: 'Cancel',
-                    style: 'cancel'
-                },
-                {
-                    text: 'Logout',
-                    onPress: async () => {
-                        try {
-                            await AsyncStorage.removeItem('loggedInUserEmail');
-                            logout();
-                        } catch (error) {
-                            console.error('Error logging out: ', error);
-                        }
-                    }
-                }
-            ]
-        );
-    };
-
-    
     return (
         <Tab.Navigator
             screenOptions={({route}) => ({
@@ -41,7 +16,7 @@ export default function MyTabs() {
                 headerTitleStyle:{
                     fontWeight: 'bold'
                 },
-                tabBarActiveTintColor: 'tomato',
+                tabBarActiveTintColor: 'black',
                 tabBarInactiveTintColor: 'gray',
                 tabBarIcon:({color}) => {
                     let iconName
@@ -51,13 +26,20 @@ export default function MyTabs() {
                     else if(route.name == 'Settings') {
                         iconName = 'settings-sharp'
                     }
-                    return <Ionicons name = {iconName} color={color} size={25} />
+                    return <Ionicons name = {iconName} size={25} />
                 },
             })}
         >
             <Tab.Screen
                 name="Home"
                 component={HomeScreen}
+                options={{
+                    title: 'หน้าหลัก'
+                }}
+            />
+            <Tab.Screen
+                name="Settings"
+                component={SettingScreen}
                 options={{
                     title: 'หน้าหลัก'
                 }}
