@@ -1,23 +1,35 @@
-import React from 'react';
+import * as React from 'react';
+import { Button, View } from 'react-native';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
-import { AuthProvider, useAuth } from "./authContext";
-import HomeScreen from './screens/home';
-import MyTabs from './tabs/mytab';
-
-export default function App() {
+function HomeScreen({ navigation }) {
   return (
-    <AuthProvider>
-      <AppContent />
-    </AuthProvider>
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Button
+        onPress={() => navigation.navigate('Notifications')}
+        title="Go to notifications"
+      />
+    </View>
   );
 }
 
-function AppContent() {
-  const { user } = useAuth();
+function NotificationsScreen({ navigation }) {
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Button onPress={() => navigation.goBack()} title="Go back home" />
+    </View>
+  );
+}
 
+const Drawer = createDrawerNavigator();
+
+export default function App() {
   return (
     <NavigationContainer>
-      {user ? <MyTabs /> : <HomeScreen />}
+      <Drawer.Navigator initialRouteName="Home">
+        <Drawer.Screen name="Home" component={HomeScreen} />
+        <Drawer.Screen name="Notifications" component={NotificationsScreen} />
+      </Drawer.Navigator>
     </NavigationContainer>
   );
 }
