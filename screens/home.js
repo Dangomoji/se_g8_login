@@ -1,68 +1,26 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-import axios from 'axios';
-import { useAuth } from '../authContext';
+import React from "react";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { useAuth } from "../authContext";
+import UserHeader from "./userHeader";
 
 const HomeScreen = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const { login, logout, user, isLogin } = useAuth();
-
-  const handleLogin = async () => {
-    try {
-      const response = await axios.post('http://10.40.158.122:2000/se/login', {
-        //10.40.158.122 เป็น IP address ของส้มนะ ต้องเปลี่ยนทีหลังถ้าทำเครื่องอื่น 
-        username: username,
-        password: password
-      });
-      if (response.data.success) {
-        login(username, password); 
-      } else {
-        Alert.alert('Invalid username or password');
-      }
-    } catch (error) {
-      Alert.alert('Error', 'An error occurred while trying to log in');
-    }
-  };
+  const { user, logout } = useAuth();
 
   const handleLogout = () => {
-    logout(); 
-    setUsername('');
-    setPassword('');
+    logout();
   };
 
   return (
     <View style={styles.container}>
-      {!isLogin && (
-        <>
-          <Text style={{paddingBottom: 10 , fontSize: 50 , fontWeight: 'bold' }}>เข้าสู่ระบบ</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Username"
-            onChangeText={text => setUsername(text)}
-            value={username}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Password"
-            onChangeText={text => setPassword(text)}
-            value={password}
-            secureTextEntry
-          />
-          <TouchableOpacity style={styles.button} onPress={handleLogin}>
-            <Text style={styles.buttonText}>Login</Text>
-          </TouchableOpacity>
-        </>
-      )}
-
-      {isLogin && (
-        <>
-          <Text style={{fontSize: 20, fontWeight: 'bold'}}>Welcome, {user.username}</Text>
-          <TouchableOpacity style={styles.button} onPress={handleLogout}>
-            <Text style={styles.buttonText}>Logout</Text>
-          </TouchableOpacity>
-        </>
-      )}
+      <UserHeader user={user} />
+      <View style={styles.content}>
+        <Text style={styles.welcomeText}>
+          Welcome, {user.firstname} {user.lastname} {user.positionName}
+        </Text>
+        <TouchableOpacity style={styles.button} onPress={handleLogout}>
+          <Text style={styles.buttonText}>Logout</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -70,26 +28,25 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
-  input: {
-    width: '80%',
-    padding: 10,
-    marginBottom: 10,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
+  content: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  welcomeText: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 20,
   },
   button: {
-    marginTop: 10,
     padding: 15,
-    backgroundColor: '#000000',
-    alignItems: 'center',
+    backgroundColor: "#000000",
+    alignItems: "center",
     borderRadius: 5,
   },
   buttonText: {
-    color: 'white',
+    color: "white",
     fontSize: 18,
   },
 });

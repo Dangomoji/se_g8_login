@@ -21,7 +21,7 @@ app.post('/se/login', (req, res) => {
     const { username, password } = req.body;
 
     connection.query(
-        'SELECT * FROM nurse WHERE usename = ? AND password = ?',
+        'SELECT n.firstname, n.lastname, p.positionName FROM nurse n INNER JOIN position p ON n.positionID = p.positionID WHERE n.usename = ? AND n.password = ?',
         [username, password],
         (error, results, fields) => {
             if (error) {
@@ -30,13 +30,16 @@ app.post('/se/login', (req, res) => {
             }
 
             if (results.length > 0) {
-                res.json({ success: true, message: 'Login successful' });
+                const nurse = results[0];
+                res.json({ success: true, message: 'Login successful', nurse });
             } else {
                 res.json({ success: false, message: 'Invalid username or password' });
             }
         }
     );
 });
+
+
 
 app.get('/se/nurse', function (req, res, next) {
     connection.query(

@@ -1,23 +1,29 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { AuthProvider, useAuth } from "./authContext";
-import HomeScreen from './screens/home';
+import LoginScreen from './screens/login';
 import MyTabs from './tabs/mytab';
 
 export default function App() {
   return (
     <AuthProvider>
-     <AppContent/>
-   </AuthProvider>
+      <AppContent />
+    </AuthProvider>
   );
 }
 
 function AppContent() {
-  const { user } = useAuth();
+  const { isLogin } = useAuth();
 
   return (
     <NavigationContainer>
-      {user ? <MyTabs /> : <HomeScreen />}
+      {isLogin ? <AuthenticatedContent/> : <LoginScreen />}
     </NavigationContainer>
+  );
+}
+
+function AuthenticatedContent() {
+  return (
+    <MyTabs/>
   );
 }
