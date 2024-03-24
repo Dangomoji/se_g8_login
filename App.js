@@ -13,17 +13,17 @@ export default function App() {
 }
 
 function AppContent() {
-  const { isLogin } = useAuth();
+  const { user , isLogin } = useAuth();
 
   return (
     <NavigationContainer>
-      {isLogin ? <AuthenticatedContent/> : <LoginScreen />}
+      {isLogin ? <AuthenticatedContent user={user}/> : <LoginScreen />}
     </NavigationContainer>
   );
 }
 
-function AuthenticatedContent() {
+function AuthenticatedContent(user) {
   return (
-    <MyTabs/>
+    <MyTabs user={user}/>
   );
 }
