@@ -8,6 +8,7 @@ const HomeScreen = () => {
 
   return (
     <View style={styles.container}>
+      <UserHeader user={user}/>
       <View style={styles.content}>
         <Text style={styles.welcomeText}>
           Welcome, {user.firstname} {user.lastname} {user.positionName}

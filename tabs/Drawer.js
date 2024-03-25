@@ -1,5 +1,5 @@
 import React from "react";
-import { View, TouchableOpacity, Text } from "react-native";
+import { TouchableOpacity } from "react-native";
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
@@ -7,43 +7,42 @@ import {
   DrawerActions,
 } from "@react-navigation/drawer";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { useAuth } from "../authContext";
 import Icon from "react-native-vector-icons/Entypo";
 
 import HomeScreen from "../screens/home";
-import ProfileScreen from "../screens/profile";
 import RequestExtraWorkScreen from "../screens/requestExtraWork";
 import AssignScreen from "../screens/assign";
-import UserHeader from "../screens/userHeader";
 import DrawerContent from "./DrawerContent";
 
-const StackNav = (user) => {
+const StackNav = () => {
   const Stack = createNativeStackNavigator();
   const navigation = useNavigation();
+  const route = useRoute();
+
   return (
     <Stack.Navigator
       screenOptions={{
-        statusBarColor: "#0163d2",
+        statusBarColor: "black",
         headerStyle: {
-          backgroundColor: "#0163d2",
+          backgroundColor: "grey",
         },
         headerTintColor: "#fff",
         headerTitleAlign: "center",
-        headerLeft: () => {
-          return (
-            <Icon
-              name="menu"
-              onPress={() => navigation.openDrawer()}
-              size={30}
-              color="#fff"
-            />
-          );
-        },
+        headerLeft: () => (
+          <TouchableOpacity onPress={() => navigation.openDrawer()}>
+            <Icon name="menu" size={30} color="#fff" />
+          </TouchableOpacity>
+        ),
+        headerRight: () => (
+          <TouchableOpacity onPress={() => console.log("Pressed")}>
+            <Icon name="bell" size={30} color="#fff" />
+          </TouchableOpacity>
+        ),
       }}
     >
       <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name="Profile" component={ProfileScreen} />
       <Stack.Screen
         name="ประวัติรายงานขอขึ้นเวรฉุกเฉิน"
         component={RequestExtraWorkScreen}
@@ -56,6 +55,7 @@ const StackNav = (user) => {
 const Drawer = createDrawerNavigator();
 
 const MyDrawer = ({ user }) => {
+  const { logout } = useAuth();
   const handleLogout = () => {
     logout();
   };

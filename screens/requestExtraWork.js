@@ -1,6 +1,7 @@
 import { Text, View, StyleSheet,Button } from 'react-native';
 import React from 'react';
 import { useAuth } from "../authContext";
+import UserHeader from "./userHeader";
 
 export default function RequestExtraWorkScreen() {
     const { user } = useAuth();
@@ -9,9 +10,7 @@ export default function RequestExtraWorkScreen() {
       }
       return (
         <View style={styles.container}>
-          <View style={styles.name}>
-            <Text style={styles.text}>หัวหน้าพยาบาล แพรวพราว ไก่ทอดี</Text>
-          </View>
+          <UserHeader user={user}/>
           <View style={styles.main}>
             <View style={styles.head}>
               <Text>คำร้องขอการอนุมัติขึ้นเวรฉุกเฉิน</Text>

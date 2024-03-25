@@ -1,7 +1,10 @@
 import { StyleSheet,Button,Text, View } from 'react-native';
 import React from 'react';
+import UserHeader from "./userHeader";
+import { useAuth } from "../authContext";
 
 export default function AssignScreen() {
+  const { user } = useAuth();
   const _onPressButton1 = () => {
     alert('ยอมรับการแลกเวรสำเร็จ')
   }
@@ -10,9 +13,7 @@ export default function AssignScreen() {
   }
   return (
     <View style={styles.container}>
-      <View style={styles.name}>
-        <Text style={styles.text}>หัวหน้าพยาบาล แพรวพราว ไก่ทอดี</Text>
-      </View>
+      <UserHeader user={user}/>
       <View style={styles.main}>
         <View style={styles.head}>
           <Text>คำร้องขอแลกเวร</Text>
