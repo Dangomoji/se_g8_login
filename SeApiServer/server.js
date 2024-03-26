@@ -104,6 +104,54 @@ app.get('/se/schedule/select/:id/:date', function (req, res, next) {
     );
 });
 
+app.get('/se/nurse/schedule', function (req, res, next) {
+    connection.query(
+        `SELECT a.assignID, n.firstname, n.lastname, s.shift, s.date AS schedule_date, s2.shift AS shift2, s2.date AS schedule_date2, a.remark
+        FROM nurse n
+        JOIN assign a ON n.nurseID = a.nurseID
+        JOIN schedule s ON a.scheduleID = s.scheduleID
+        LEFT JOIN schedule s2 ON a.scheduleID2 = s2.scheduleID
+        LEFT JOIN statusAssign sa ON a.statusAssignID = sa.statusAssignID
+        WHERE a.statusAssignID IS NULL;`,
+        function (err, results, fields) {
+            if (err) {
+                console.error('Error fetching data: ', err);
+                res.status(500).json({ error: 'Internal server error' });
+                return;
+            }
+            res.json(results);
+        }
+    );
+});
+
+app.post('/se/update/:itemId', async (req, res) => {
+    const { itemId } = req.params;
+    const { statusAssignId } = req.body;
+  
+    try {
+      // Execute the SQL query directly using the connection
+      connection.query(
+        'UPDATE assign SET statusAssignID = ? WHERE assignID = ?',
+        [statusAssignId, itemId],
+        (error, results) => {
+          if (error) {
+            console.error('Error updating StatusAssignId:', error);
+            res.status(500).json({ success: false, error: 'Internal server error' });
+            return;
+          }
+          console.log('StatusAssignId updated successfully');
+          res.status(200).json({ success: true, message: 'StatusAssignId updated successfully' });
+        }
+      );
+    } catch (error) {
+      console.error('Error updating StatusAssignId:', error);
+      res.status(500).json({ success: false, error: 'Internal server error' });
+    }
+  });
+  
+  
+  
+
 
 app.listen(2000, function () {
     console.log('CORS-enabled web server listening on port 2000')

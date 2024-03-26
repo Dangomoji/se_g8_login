@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { useAuth } from "../authContext";
 import UserHeader from "./userHeader";
 
@@ -9,10 +9,16 @@ const HomeScreen = () => {
   return (
     <View style={styles.container}>
       <UserHeader user={user}/>
-      <View style={styles.content}>
+      <View style={styles.head}>
         <Text style={styles.welcomeText}>
-          Welcome, {user.firstname} {user.lastname} {user.positionName}
+            ยินดีต้อนรับ, {user.positionName} {user.firstname} {user.lastname} {'\n'}
+            คีย์วันที่ทำไงหนออ้าย
         </Text>
+      </View>
+      <View style={styles.content}>
+        <View style={styles.home}>
+          <Image source={require('../assets/poster.jpeg')} style={styles.image} />
+        </View>
       </View>
     </View>
   );
@@ -24,11 +30,10 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    justifyContent: "center",
     alignItems: "center",
   },
   welcomeText: {
-    fontSize: 20,
+    fontSize: 17,
     fontWeight: "bold",
     marginBottom: 20,
   },
@@ -42,6 +47,26 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 18,
   },
+  home: {
+    height: 500,
+    width: 350,
+    backgroundColor: '#DCDCDC',
+    borderRadius: 10,
+    marginBottom: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  image: {
+    width: '80%',
+    height: '80%',
+    resizeMode: 'cover',
+    borderRadius: 10,
+  },
+  head: {
+    marginLeft: 30,
+    marginTop: 10,
+  }
 });
+
 
 export default HomeScreen;
