@@ -8,7 +8,8 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 const DrawerList = [
   {icon: 'home-outline', label: 'Home', navigateTo: 'Home'},
   {label: 'ประวัติรายงานขอขึ้นเวรฉุกเฉิน', navigateTo: 'ประวัติรายงานขอขึ้นเวรฉุกเฉิน'},
-  {label: 'อนุมัติการแลกเวร', navigateTo: 'อนุมัติการแลกเวร'}
+  {label: 'อนุมัติการแลกเวร', navigateTo: 'อนุมัติการแลกเวร'},
+  {label: 'Upload', navigateTo: 'Upload'}
 ];
 const DrawerLayout = ({icon, label, navigateTo}) => {
   const navigation = useNavigation();
