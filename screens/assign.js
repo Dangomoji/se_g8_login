@@ -81,7 +81,9 @@ export default function AssignScreen() {
   
 
   const renderRequestData = () => {
-    if (requestData) {
+    if (!requestData || requestData.length === 0) {
+      return <Text>ไม่มีคำร้องขอแลกเวร</Text>;
+    } else {
       return requestData.map((item, index) => (
         <View style={styles.from} key={index}>
           <View style={styles.massage}>
@@ -96,10 +98,6 @@ export default function AssignScreen() {
           </View>
         </View>
       ));
-    } else {
-      return (
-        <Text>Loading...</Text>
-      );
     }
   };
 
