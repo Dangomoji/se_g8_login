@@ -5,10 +5,6 @@ import * as DocumentPicker from "expo-document-picker";
 export default function Upload() {
   const [pickedDocument, setPickedDocument] = useState(null);
 
-  useEffect(() => {
-    console.log("pickedDocument updated:", pickedDocument);
-  }, [pickedDocument]);
-
   const pickDocument = async () => {
     try {
       const result = await DocumentPicker.getDocumentAsync({
@@ -29,7 +25,7 @@ export default function Upload() {
 
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Button title="Pick a PDF Document" onPress={pickDocument} />
+      <Button title="Pick a .CSV" onPress={pickDocument} />
       {pickedDocument && pickedDocument.assets && pickedDocument.assets.length > 0 && (
         <View style={{ marginTop: 20 }}>
           <Text>URI: {pickedDocument.assets[0].uri}</Text>
