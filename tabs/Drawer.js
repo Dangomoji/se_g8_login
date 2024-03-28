@@ -16,6 +16,7 @@ import RequestExtraWorkScreen from "../screens/requestExtraWork";
 import AssignScreen from "../screens/assign";
 import DrawerContent from "./DrawerContent";
 import UploadScreen from "../screens/upload";
+import ExchangeScreen from "../screens/exchange";
 
 const StackNav = () => {
   const Stack = createNativeStackNavigator();
@@ -48,8 +49,9 @@ const StackNav = () => {
         name="ประวัติรายงานขอขึ้นเวรฉุกเฉิน"
         component={RequestExtraWorkScreen}
       />
-      <Stack.Screen name="อนุมัติการแลกเวร" component={AssignScreen} />
+      <Stack.Screen name="คำขอแลกเวร" component={AssignScreen} />
       <Stack.Screen name="Upload" component={UploadScreen} />
+      <Stack.Screen name="Exchange" component={ExchangeScreen} />
     </Stack.Navigator>
   );
 };

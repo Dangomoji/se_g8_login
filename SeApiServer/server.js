@@ -106,7 +106,7 @@ app.get('/se/schedule/select/:id/:date', function (req, res, next) {
 
 app.get('/se/nurse/schedule', function (req, res, next) {
     connection.query(
-        `SELECT a.assignID, n.firstname, n.lastname, s.shift, s.date AS schedule_date, s2.shift AS shift2, s2.date AS schedule_date2, a.remark
+        `SELECT a.assignID, n.firstname, n.lastname, s.shift, s.date AS schedule_date, s2.shift AS shift2, s2.date AS schedule_date2
         FROM nurse n
         JOIN assign a ON n.nurseID = a.nurseID
         JOIN schedule s ON a.scheduleID = s.scheduleID
@@ -124,7 +124,27 @@ app.get('/se/nurse/schedule', function (req, res, next) {
     );
 });
 
-app.post('/se/update/:itemId', async (req, res) => {
+app.get('/se/nurse/schedule/request', function (req, res, next) {
+    connection.query(
+        `SELECT r.requestID, n.firstname,n.lastname,s.date,s.shift
+            FROM nurse as n join requestextrawork as r on n.nurseID = r.NurseID
+            join schedule as s ON s.scheduleID = r.scheduleID
+            LEFT JOIN statusextra as se ON r.statusExtraID = se.statusExtraID
+            WHERE r.statusExtraID is null;`,
+        function (err, results, fields) {
+            if (err) {
+                console.error('Error fetching data: ', err);
+                res.status(500).json({ error: 'Internal server error' });
+                return;
+            }
+            res.json(results);
+        }
+    );
+});
+
+
+
+app.post('/se/assign/update/:itemId', async (req, res) => {
     const { itemId } = req.params;
     const { statusAssignId } = req.body;
   
@@ -139,8 +159,31 @@ app.post('/se/update/:itemId', async (req, res) => {
             res.status(500).json({ success: false, error: 'Internal server error' });
             return;
           }
-          console.log('StatusAssignId updated successfully');
           res.status(200).json({ success: true, message: 'StatusAssignId updated successfully' });
+        }
+      );
+    } catch (error) {
+      console.error('Error updating StatusAssignId:', error);
+      res.status(500).json({ success: false, error: 'Internal server error' });
+    }
+  });
+  
+
+  app.post('/se/requestextrawork/update/:itemId', async (req, res) => {
+    const { itemId } = req.params;
+    const { statusExtraId } = req.body;
+  
+    try {
+      // Execute the SQL query directly using the connection
+      connection.query(
+        'UPDATE requestextrawork SET statusExtraId = ? WHERE requestID = ?',
+        [statusExtraId, itemId],
+        (error, results) => {
+          if (error) {
+            res.status(500).json({ success: false, error: 'Internal server error' });
+            return;
+          }
+          res.status(200).json({ success: true, message: 'StatusExtraId updated successfully' });
         }
       );
     } catch (error) {

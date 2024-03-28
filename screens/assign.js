@@ -1,4 +1,5 @@
-import { StyleSheet, Button, Text, View, ScrollView } from 'react-native';
+import { StyleSheet, Button, Text, View, ScrollView, Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import React, { useState, useEffect } from 'react';
 import UserHeader from "./userHeader";
 import { useAuth } from "../authContext";
@@ -6,6 +7,7 @@ import { useAuth } from "../authContext";
 export default function AssignScreen() {
   const { user } = useAuth();
   const [requestData, setRequestData] = useState(null);
+  const navigation = useNavigation();
 
   useEffect(() => {
     fetchScheduleData();
@@ -13,23 +15,24 @@ export default function AssignScreen() {
 
   const fetchScheduleData = async () => {
     try {
-      const response = await fetch('http://10.40.158.122:2000/se/nurse/schedule');
+      const response = await fetch('http://192.168.204.148:2000/se/nurse/schedule');
       const data = await response.json();
-      formatDates(data); 
+      console.log(data);
+      mapData(data); 
     } catch (error) {
       console.error('Error fetching data:', error);
     }
   };
 
-  const formatDates = (data) => {
-    const formattedData = data.map(item => {
+  const mapData = (data) => {
+    const mappedData = data.map(item => {
       return {
         ...item,
         date1: formatDate(item.schedule_date),
         date2: formatDate(item.schedule_date2)
       };
     });
-    setRequestData(formattedData);
+    setRequestData(mappedData);
   };
 
   const formatDate = (dateString) => {
@@ -42,7 +45,7 @@ export default function AssignScreen() {
 
   const handleRequestAction = async (itemId, statusAssignId) => {
     try {
-      const response = await fetch(`http://10.40.158.122:2000/se/update/${itemId}`, {
+      const response = await fetch(`http://192.168.204.148:2000/se/assign/update/${itemId}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -52,7 +55,6 @@ export default function AssignScreen() {
   
       if (response.ok) {
         fetchScheduleData(); 
-        console.log('StatusAssignId updated successfully');
       } else {
         console.error('Failed to update StatusAssignId');
       }
@@ -63,7 +65,24 @@ export default function AssignScreen() {
   
   const handleAcceptRequest = async (itemId) => {
     try {
-      await handleRequestAction(itemId, 1);
+      Alert.alert(
+        'Confirm',
+        'ยืนยันการรับทราบ?',
+        [
+          {
+            text: 'ตกลง',
+            onPress: async () => {
+              await handleRequestAction(itemId, 1);
+              navigation.navigate('Exchange',{ requestData });
+            },
+          },
+          {
+            text: 'ยกเลิก',
+            style: 'cancel',
+          },
+        ],
+        { cancelable: false }
+      );
     } catch (error) {
       console.error('Error accepting request:', error);
     }
@@ -77,9 +96,6 @@ export default function AssignScreen() {
     }
   };
   
-
-  
-
   const renderRequestData = () => {
     if (!requestData || requestData.length === 0) {
       return <Text>ไม่มีคำร้องขอแลกเวร</Text>;
@@ -147,7 +163,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   from: {
-    height: 300,
+    height: 250,
     width: 350,
     backgroundColor: '#DCDCDC',
     borderRadius: 10,

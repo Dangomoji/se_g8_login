@@ -8,7 +8,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 const DrawerList = [
   {icon: 'home-outline', label: 'Home', navigateTo: 'Home'},
   {label: 'ประวัติรายงานขอขึ้นเวรฉุกเฉิน', navigateTo: 'ประวัติรายงานขอขึ้นเวรฉุกเฉิน'},
-  {label: 'อนุมัติการแลกเวร', navigateTo: 'อนุมัติการแลกเวร'},
+  {label: 'คำขอแลกเวร', navigateTo: 'คำขอแลกเวร'},
   {label: 'Upload', navigateTo: 'Upload'}
 ];
 const DrawerLayout = ({icon, label, navigateTo}) => {
