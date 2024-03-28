@@ -1,21 +1,23 @@
 import React from 'react';
-import {View, StyleSheet, Text} from 'react-native';
-import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import {useNavigation} from '@react-navigation/native';
+import { View, StyleSheet, Text } from 'react-native';
+import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useAuth } from '../authContext';
 
 const DrawerList = [
-  {icon: 'home-outline', label: 'Home', navigateTo: 'Home'},
-  {label: 'ประวัติรายงานขอขึ้นเวรฉุกเฉิน', navigateTo: 'ประวัติรายงานขอขึ้นเวรฉุกเฉิน'},
-  {label: 'คำขอแลกเวร', navigateTo: 'คำขอแลกเวร'},
-  {label: 'Upload', navigateTo: 'Upload'}
+  { icon: 'home-outline', label: 'Home', navigateTo: 'Home' },
+  { label: 'ประวัติรายงานขอขึ้นเวรฉุกเฉิน', navigateTo: 'ประวัติรายงานขอขึ้นเวรฉุกเฉิน', allowedRoles: ['หัวหน้าพยาบาล'] },
+  { label: 'คำขอแลกเวร', navigateTo: 'คำขอแลกเวร' },
+  { label: 'Upload', navigateTo: 'Upload', allowedRoles: ['หัวหน้าพยาบาล'] }
 ];
-const DrawerLayout = ({icon, label, navigateTo}) => {
+
+const DrawerLayout = ({ icon, label, navigateTo }) => {
   const navigation = useNavigation();
   return (
     <DrawerItem
-      icon={({color, size}) => <Icon name={icon} color={color} size={size} />}
+      icon={({ color, size }) => <Icon name={icon} color={color} size={size} />}
       label={label}
       onPress={() => {
         navigation.navigate(navigateTo);
@@ -24,8 +26,9 @@ const DrawerLayout = ({icon, label, navigateTo}) => {
   );
 };
 
-const DrawerItems = props => {
-    return DrawerList.map((el, i) => {
+const DrawerItems = ({ userRole }) => {
+  return DrawerList.map((el, i) => {
+    if (!el.allowedRoles || el.allowedRoles.includes(userRole)) {
       return (
         <DrawerLayout
           key={i}
@@ -34,21 +37,28 @@ const DrawerItems = props => {
           navigateTo={el.navigateTo}
         />
       );
-    });
-  };
+    } else {
+      return null; 
+    }
+  });
+};
+
 function DrawerContent({ handleLogout, ...props }) {
+  const { user } = useAuth();
+  const userRole = user ? user.positionName : null;
+  console.log(userRole)
   return (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       <DrawerContentScrollView {...props}>
         <View style={styles.drawerContent}>
           <View style={styles.drawerSection}>
-            <DrawerItems />
+            <DrawerItems userRole={userRole} />
           </View>
         </View>
       </DrawerContentScrollView>
       <View style={styles.bottomDrawerSection}>
         <DrawerItem
-          icon={({color, size}) => (
+          icon={({ color, size }) => (
             <Icon name="exit-to-app" color={color} size={size} />
           )}
           label="Sign Out"
