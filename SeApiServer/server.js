@@ -192,6 +192,51 @@ app.post('/se/assign/update/:itemId', async (req, res) => {
     }
   });
   
+  const formatDateForMySQL = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+    };
+
+
+    app.post('/se/schedule/store', function (req, res, next) {
+        const { shift, people_amount } = req.body;
+        const date = formatDateForMySQL(new Date()); 
+    
+        connection.query(
+            'INSERT INTO schedule (date, shift, people_amount) VALUES (?, ?, ?)',
+            [date, shift, people_amount],
+            function (err, results, fields) {
+                if (err) {
+                    console.error('Error inserting schedule data: ', err);
+                    res.status(500).json({ error: 'Internal server error' });
+                    return;
+                }
+                const scheduleID = results.insertId;
+                console.log(scheduleID)
+                res.json({ success: true, message: 'Schedule data inserted successfully', scheduleID });
+            }
+        );
+    });
+    
+
+app.post('/se/assign/store', function (req, res, next) {
+    const { nurseID, scheduleID } = req.body;
+    connection.query(
+        'INSERT INTO assign (nurseID, scheduleID) VALUES (?, ?)',
+        [nurseID, scheduleID],
+        function (err, results, fields) {
+            if (err) {
+                console.error('Error inserting assign data: ', err);
+                res.status(500).json({ error: 'Internal server error' });
+                return;
+            }
+            res.json({ success: true, message: 'Assign data inserted successfully' });
+        }
+    );
+});
+
   
   
 

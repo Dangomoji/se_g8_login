@@ -9,6 +9,7 @@ export default function RequestExtraWorkScreen() {
 
   useEffect(() => {
     fetchScheduleData();
+    fetchScheduleTime();
   }, []);
 
   const fetchScheduleData = async () => {
@@ -20,6 +21,7 @@ export default function RequestExtraWorkScreen() {
       console.error('Error fetching data:', error);
     }
   };
+
 
   const mapData = (data) => {
     const mappedData = data.map(item => {
