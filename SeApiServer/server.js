@@ -110,9 +110,9 @@ app.get('/se/nurse/schedule', function (req, res, next) {
         FROM nurse n
         JOIN assign a ON n.nurseID = a.nurseID
         JOIN schedule s ON a.scheduleID = s.scheduleID
-        LEFT JOIN schedule s2 ON a.scheduleID2 = s2.scheduleID
+        JOIN schedule s2 ON a.scheduleID2 = s2.scheduleID
         LEFT JOIN statusAssign sa ON a.statusAssignID = sa.statusAssignID
-        WHERE a.statusAssignID IS NULL;`,
+        WHERE a.scheduleID2 IS NOT NULL;`,
         function (err, results, fields) {
             if (err) {
                 console.error('Error fetching data: ', err);

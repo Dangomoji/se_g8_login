@@ -144,6 +144,7 @@ export default function Upload() {
         isVisible={isDatePickerVisible}
         mode="date"
         date={selectedDate}
+        minimumDate={new Date()} 
         onConfirm={handleConfirm}
         onCancel={hideDatePicker}
       />

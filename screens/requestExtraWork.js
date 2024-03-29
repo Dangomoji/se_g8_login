@@ -9,7 +9,6 @@ export default function RequestExtraWorkScreen() {
 
   useEffect(() => {
     fetchScheduleData();
-    fetchScheduleTime();
   }, []);
 
   const fetchScheduleData = async () => {

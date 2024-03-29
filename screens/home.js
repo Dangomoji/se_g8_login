@@ -1,18 +1,19 @@
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
+import { useState } from "react";
 import { useAuth } from "../authContext";
 import UserHeader from "./userHeader";
 
 const HomeScreen = () => {
   const { user } = useAuth();
-
+  const [currentDate, setCurrentDate] = useState(new Date());
   return (
     <View style={styles.container}>
       <UserHeader user={user}/>
       <View style={styles.head}>
         <Text style={styles.welcomeText}>
             ยินดีต้อนรับ, {user.positionName} {user.firstname} {user.lastname} {'\n'}
-            คีย์วันที่ทำไงหนออ้าย
+            {currentDate.toLocaleDateString()}
         </Text>
       </View>
       <View style={styles.content}>
